@@ -20,7 +20,6 @@ const messages = [
     }
 ]
 
-let currrentChatData = [];
 let previousChatData = [];
 
 const ChatsScreen = (props) => {
@@ -28,14 +27,6 @@ const ChatsScreen = (props) => {
     const [isModalVisible, setIsModalVisible] = useState(false);
     const [input, setInput] = useState('');
     const [chatsList, setChatsList] = useState([]);
-
-    useEffect(() => {
-        if (currrentChatData.length > previousChatData.length) {
-            setChatsList(currrentChatData);
-            console.log('currrentChatData', currrentChatData);
-            previousChatData = currrentChatData;
-        }
-    }, [currrentChatData]);
 
     const { loading, error, data } = useSubscription(
         gql`subscription {
@@ -46,8 +37,6 @@ const ChatsScreen = (props) => {
             }`
     )
 
-    console.log(chatsList);
-
     if (loading) {
         console.log('notification loading', loading)
     }
@@ -55,8 +44,9 @@ const ChatsScreen = (props) => {
         console.error('notification error', error);
     }
     if (data) {
-        if (data.chats.length > 0) {
-            currrentChatData = data.chats;
+        if (previousChatData != data) {
+            previousChatData = data;
+            setChatsList(data.chats);
         }
     }
 
