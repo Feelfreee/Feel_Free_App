@@ -1,6 +1,7 @@
 import React from 'react';
 import { View, Text, TouchableOpacity, Dimensions } from 'react-native';
-import { Card, Paragraph } from 'react-native-paper';
+import { Card, Paragraph, Avatar } from 'react-native-paper';
+import { Colors } from '../Constants';
 import Styles from '../Styles';
 
 const { width, height } = Dimensions.get('screen');
@@ -25,19 +26,8 @@ const ChatRequest = ({
         <Card.Title
             title={name}
             subtitle={time}
-            left={
-                () => <View
-                    style={{
-                        height: 50,
-                        width: 50,
-                        borderRadius: 30,
-                        backgroundColor: 'grey',
-                        borderWidth: 1,
-                        borderColor: 'black'
-                    }}
-                />
-            }
-            titleStyle={{ color: '#69C0FF' }}
+            left={() => <Avatar.Text size={45} label={name[0]} />}
+            titleStyle={{ color: Colors.theme }}
         />
         <Card.Content>
             <Paragraph>{description}</Paragraph>

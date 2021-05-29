@@ -76,7 +76,7 @@ const MyPostsScreen = ({ navigation }) => {
                         axios(config).then(value => {
                             setPosts(value.data.data.users_by_pk.posts);
                             setRefresh(false);
-                        });
+                        }).catch(e => console.log(e));
                     })
             })
     }

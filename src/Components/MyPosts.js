@@ -13,10 +13,12 @@ const MyPosts = ({
     description,
     helperCount,
     navigation,
-    id
+    id,
 }) => {
 
     const [onImageErrorStyle, setOnImageErrorStyle] = useState({});
+
+    console.log(id);
 
     return <Card
         style={{
@@ -50,7 +52,7 @@ const MyPosts = ({
             </Text>
             <TouchableOpacity
                 type
-                onPress={() => { navigation.navigate('ChatRequests') }}
+                onPress={() => { navigation.navigate('ChatRequests', { navigation, id }) }}
                 style={{ ...Styles.Button, marginTop: 0, marginBottom: 0, flex: 2 }}>
                 <Text style={{ fontSize: width * 0.040, color: 'white' }}>Helpers</Text>
             </TouchableOpacity>

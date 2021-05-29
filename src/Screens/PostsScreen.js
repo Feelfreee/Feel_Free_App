@@ -37,7 +37,7 @@ const PostsScreen = (props) => {
                 <Text style={{
                     fontWeight: 'bold',
                     fontSize: 16,
-                    color: screenIndex == 0 ? 'black' : 'grey'
+                    color: screenIndex == 0 ? 'black' : 'lightgrey'
                 }}>My Posts</Text>
             </TouchableOpacity>
             <TouchableOpacity
@@ -46,7 +46,7 @@ const PostsScreen = (props) => {
                 <Text style={{
                     fontWeight: 'bold',
                     fontSize: 16,
-                    color: screenIndex == 1 ? 'black' : 'grey'
+                    color: screenIndex == 1 ? 'black' : 'lightgrey'
                 }}>All Posts</Text>
             </TouchableOpacity>
         </View>
