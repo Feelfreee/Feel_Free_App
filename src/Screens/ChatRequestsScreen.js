@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from 'react';
-import { FlatList, View, Text, Dimensions } from 'react-native';
+import { FlatList, View, Text, Dimensions, RefreshControl } from 'react-native';
 import Header from '../Components/Header';
 import ChatRequest from '../Components/ChatRequest';
 import Styles from '../Styles';
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Colors } from '../Constants';
+import { NIL } from 'uuid';
 
 const { width, height } = Dimensions.get('screen');
 
@@ -45,9 +46,11 @@ const helpersData = [
 const ChatRequestsScreen = (props) => {
 
     console.log(props.route.params.id);
+    let helperData = [];
 
     const [helperList, setHelperList] = useState([]);
     const [refresh, setRefresh] = useState(true);
+    const [showList, setShowList] = useState(false);
 
     const fetchHelpersList = () => {
         AsyncStorage.getItem('API_ACCESS_TOKEN')
@@ -68,16 +71,36 @@ const ChatRequestsScreen = (props) => {
                                                     helper_id
                                                     text
                                                     created_at
-                                                    post_id
                                                 }
                                             }
                                         }
                                     }`
                             }
                         }
+
                         axios(config).then((value) => {
-                            setHelperList(value.data.data.users_by_pk.posts.posts_helpers)
-                        });
+                            value.data.data.users_by_pk.posts[0].posts_helpers.map((helper) => {
+                                const nameconfig = {
+                                    data: {
+                                        query:
+                                            `query MyQuery {
+                                                users(where: { uid: { _eq: "${helper.helper_id}" } }) {
+                                                    first_name
+                                                }
+                                            }`
+                                    },
+                                    method: 'post',
+                                    url: 'https://feelfree12.herokuapp.com/v1/graphql',
+                                };
+                                axios(nameconfig).then((name) => {
+                                    helperData.push({ name: name.data.data.users[0].first_name, ...helper });
+                                    if (value.data.data.users_by_pk.posts[0].posts_helpers.length === helperData.length) {
+                                        setShowList(true);
+                                        setHelperList(helperData);
+                                    }
+                                }).catch(err => console.log('error', err));
+                            })
+                        }).catch(err => console.log('error', err));
                     })
             })
     }
@@ -85,6 +108,8 @@ const ChatRequestsScreen = (props) => {
     useEffect(() => {
         fetchHelpersList();
     }, [])
+
+    // console.log('bahar', helperList)
 
     return <View
         style={{
@@ -95,7 +120,7 @@ const ChatRequestsScreen = (props) => {
         }}
     >
         <Header name="Helpers" backRequired backHandler={() => props.navigation.goBack()} />
-        {helperList ? helperList.length > 0 ?
+        {/* {helperList ? helperList.length > 0 ?
             <FlatList
                 refreshing
                 refreshControl={
@@ -109,10 +134,27 @@ const ChatRequestsScreen = (props) => {
                 style={{ flex: 1 }}
 
             /> : null :
-            < View style={{}}>
+            < View>
                 <Text style={{ fontSize: 25, fontWeight: 'bold', color: Colors.theme }}> No helpers available </Text>
             </View>
-        }
+        } */}
+        {showList ?
+            <View>
+                {console.log(showList, helperData)}
+                <FlatList
+                    refreshing
+                    refreshControl={
+                        <RefreshControl refreshing={refresh} onRefresh={() => fetchHelpersList()} />
+                }
+                    data={helperList}
+                    keyExtractor={(item) => { JSON.stringify(item) }}
+                    renderItem={
+                        ({ item }) => <ChatRequest {...item} navigation={props.navigation} />
+                    }
+                    style={{ flex: 1 }}
+                />
+            </View>
+            : null}
     </View>
 }
 

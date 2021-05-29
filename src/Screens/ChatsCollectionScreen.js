@@ -1,5 +1,5 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { View, Text, Button } from 'react-native';
 import Header from '../Components/Header';
 import axios from 'axios';
@@ -22,25 +22,32 @@ const ChatsCollectionScreen = (props) => {
                             },
                             data: {
                                 query: `query MyQuery {
-                                          users_by_pk(uid: "${uid}") {
-                                            chats {
-                                              content_url
-                                              created_at
-                                              id
-                                              room_id
-                                              text
-                                              user_id
-                                            }
-                                          }
-                                        }`
+  room_candidates(where: {created_by: {_neq: "${uid}"}}) {
+    created_at
+    created_by
+    id
+    room_id
+    user_id
+    user {
+      posts {
+        random_name
+      }
+    }
+  }
+}`
                             }
                         }
                         axios(config).then(value => {
-                            setChatsList(value.data.data.users_by_pk.chats);
+                            console.log(value.data)
+                            setChatsList(value.data.data.room_candidates);
                             setRefresh(false)
                         }).catch(e => console.log(e));
                     })
             })
+    }
+
+    const fetchFirstName = () => {
+        axios({ method: 'post', })
     }
 
     useEffect(() => {
@@ -54,13 +61,13 @@ const ChatsCollectionScreen = (props) => {
         justifyContent: 'center'
     }}>
         <Header name='Chats' />
-        {helperList ? helperList.length > 0 ?
+        {chatsList ? chatsList.length > 0 ?
             <FlatList
                 refreshing
                 refreshControl={
                     <RefreshControl refreshing={refresh} onRefresh={() => fetchChat()} />
                 }
-                data={helperList}
+                data={chatsList}
                 keyExtractor={(item) => { JSON.stringify(item) }}
                 renderItem={
                     ({ item }) => <ChatRequest {...item} navigation={props.navigation} />
@@ -69,7 +76,7 @@ const ChatsCollectionScreen = (props) => {
 
             /> : null :
             < View style={{}}>
-                <Text style={{ fontSize: 25, fontWeight: 'bold', color: Colors.theme }}> No helpers available </Text>
+                <Text style={{ fontSize: 25, fontWeight: 'bold', color: Colors.theme }}> You are not helping to any one </Text>
             </View>
         }
     </View>

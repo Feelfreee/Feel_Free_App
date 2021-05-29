@@ -3,6 +3,9 @@ import React from 'react';
 import { View, Text, Button, TouchableOpacity, Dimensions } from 'react-native';
 import Header from '../Components/Header';
 import Auth0 from 'react-native-auth0';
+import '../Components/FirebaseConfig'
+import firebase from '@react-native-firebase/app';
+import '@react-native-firebase/auth';
 const auth0 = new Auth0({ domain: "dev-d8qbyqhd.jp.auth0.com", clientId: 'PaZ7SVIRfOeXoDWJzogXmnRyRwAJeaxH' });
 import Styles from '../Styles';
 
@@ -16,11 +19,12 @@ const AccountScreen = (props) => {
             .clearSession()
             .then(() => {
                 console.log('Log out');
+                firebase.auth().signOut().then((value) =>
                 AsyncStorage.removeItem('API_ACCESS_TOKEN').then(() => {
                     AsyncStorage.removeItem("USER_UID").then(() =>
                         props.navigation.navigate('Auth')
                     )
-                });
+                })).catch(e => console.log(e));
             })
             .catch((e) => setError(e));
     }

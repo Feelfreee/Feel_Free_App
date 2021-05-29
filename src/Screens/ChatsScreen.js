@@ -4,7 +4,7 @@ import Header from '../Components/Header';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import Styles from '../Styles';
 import { Colors } from '../Constants/index';
-import { Card } from 'react-native-paper';
+import { Card, Avatar } from 'react-native-paper';
 
 const messages = [
     {
@@ -22,10 +22,8 @@ const ChatsScreen = (props) => {
     const [isModalVisible, setIsModalVisible] = useState(false);
 
     const SenderImageComponent = () => {
-        return <Image
-            // source={props.photoURL ? { uri: props.photoURL } : require('../assets/userImage.png')}
-            style={Styles.userImageStyle}
-        />
+        return <Avatar.Text size={30} />
+        // />
     }
 
     const RecieverImageComponent = () => {
