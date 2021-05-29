@@ -56,8 +56,8 @@ const MyPostsScreen = ({ navigation }) => {
                             },
                             data: {
                                 query: `query MyQuery {
-                                            users_by_pk(uid: "${uid}") {
-                                            posts {
+                                          users_by_pk(uid: "${uid}") {
+                                            posts(order_by: {created_at: desc}) {
                                               created_at
                                               description
                                               id
@@ -65,6 +65,9 @@ const MyPostsScreen = ({ navigation }) => {
                                               posted_by
                                               random_name
                                               updated_at
+                                              posts_helper {
+                                                helper_id
+                                              }
                                             }
                                           }
                                         }`

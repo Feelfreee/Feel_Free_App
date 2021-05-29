@@ -12,7 +12,8 @@ const OthersPost = ({
     created_at,
     description,
     helperCount,
-    navigation
+    navigation,
+    id
 }) => {
 
     const [onImageErrorStyle, setOnImageErrorStyle] = useState({});
@@ -24,7 +25,7 @@ const OthersPost = ({
     }} elevation={10}>
         <Card.Title
             title={random_name}
-            subtitle={created_at.substr(11, 5) + " " + created_at.substr(0, 10)}
+            subtitle={new Date(created_at).toLocaleString()}
             left={() => <Avatar.Text size={45} label={random_name[0]} />}
             titleStyle={{ color: Colors.theme }}
         />
@@ -50,7 +51,7 @@ const OthersPost = ({
             }}>
                 <TouchableOpacity onPress={() => {
                     console.log('all helpers');
-                    navigation.navigate('ApplyToHelp')
+                    navigation.navigate('ApplyToHelp', { id })
                 }}>
                     <Icon name='message' size={height * 0.05} color={Colors.theme} />
                 </TouchableOpacity>
