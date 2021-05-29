@@ -47,8 +47,9 @@ const ChatRequestsScreen = (props) => {
     console.log(props.route.params.id);
 
     const [helperList, setHelperList] = useState([]);
+    const [refresh, setRefresh] = useState(true);
 
-    useEffect(() => {
+    const fetchHelpersList = () => {
         AsyncStorage.getItem('API_ACCESS_TOKEN')
             .then(token => {
                 AsyncStorage.getItem('USER_UID')
@@ -79,6 +80,10 @@ const ChatRequestsScreen = (props) => {
                         });
                     })
             })
+    }
+
+    useEffect(() => {
+        fetchHelpersList();
     }, [])
 
     return <View
@@ -90,14 +95,20 @@ const ChatRequestsScreen = (props) => {
         }}
     >
         <Header name="Helpers" backRequired backHandler={() => props.navigation.goBack()} />
-        {helperList ? helperList.length > 0 ? <FlatList
-            data={helperList}
-            keyExtractor={(item) => { JSON.stringify(item) }}
-            renderItem={
-                ({ item }) => <ChatRequest {...item} navigation={props.navigation} />
-            }
-            style={{ flex: 1 }}
-        /> : null :
+        {helperList ? helperList.length > 0 ?
+            <FlatList
+                refreshing
+                refreshControl={
+                    <RefreshControl refreshing={refresh} onRefresh={() => fetchHelpersList()} />
+                }
+                data={helperList}
+                keyExtractor={(item) => { JSON.stringify(item) }}
+                renderItem={
+                    ({ item }) => <ChatRequest {...item} navigation={props.navigation} />
+                }
+                style={{ flex: 1 }}
+
+            /> : null :
             < View style={{}}>
                 <Text style={{ fontSize: 25, fontWeight: 'bold', color: Colors.theme }}> No helpers available </Text>
             </View>
