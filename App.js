@@ -18,6 +18,10 @@ import PostsScreen from './src/Screens/PostsScreen';
 import ChatRequestsScreen from './src/Screens/ChatRequestsScreen';
 import SplashScreen from './src/Screens/SplashScreen';
 import GetThreePhoneNumbers from './src/Screens/GetThreePhoneNumbers';
+import { ApolloClient, InMemoryCache, ApolloProvider } from '@apollo/client';
+import { WebSocketLink } from '@apollo/client/link/ws';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
 
 const PostsStack = createStackNavigator();
 const MainBottomTab = createBottomTabNavigator();
@@ -99,4 +103,28 @@ const App = () => {
   </NavigationContainer>
 }
 
-export default App;
+const getAuthToken = async () => {
+  const token = await AsyncStorage.getItem('API_ACCESS_TOKEN')
+  return token;
+}
+
+const client = new ApolloClient({
+  link: new WebSocketLink({
+    uri: 'wss://feelfree12.herokuapp.com/v1/graphql',
+    options: {
+      reconnect: true,
+      connectionParams: {
+        headers: {
+          Authorization: `Bearer ${getAuthToken()}`
+        }
+      }
+    }
+  }),
+  cache: new InMemoryCache(),
+});
+
+export default () => {
+  return <ApolloProvider client={client}>
+    <App />
+  </ApolloProvider>
+};

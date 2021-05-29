@@ -109,8 +109,6 @@ const ChatRequestsScreen = (props) => {
         fetchHelpersList();
     }, [])
 
-    // console.log('bahar', helperList)
-
     return <View
         style={{
             flex: 1,
@@ -120,24 +118,6 @@ const ChatRequestsScreen = (props) => {
         }}
     >
         <Header name="Helpers" backRequired backHandler={() => props.navigation.goBack()} />
-        {/* {helperList ? helperList.length > 0 ?
-            <FlatList
-                refreshing
-                refreshControl={
-                    <RefreshControl refreshing={refresh} onRefresh={() => fetchHelpersList()} />
-                }
-                data={helperList}
-                keyExtractor={(item) => { JSON.stringify(item) }}
-                renderItem={
-                    ({ item }) => <ChatRequest {...item} navigation={props.navigation} />
-                }
-                style={{ flex: 1 }}
-
-            /> : null :
-            < View>
-                <Text style={{ fontSize: 25, fontWeight: 'bold', color: Colors.theme }}> No helpers available </Text>
-            </View>
-        } */}
         {showList ?
                 <FlatList
                     refreshing
