@@ -23,6 +23,7 @@ const messages = [
 let previousChatData = [];
 
 const ChatsScreen = (props) => {
+    console.log(props.route.params.room_id);
 
     const [isModalVisible, setIsModalVisible] = useState(false);
     const [input, setInput] = useState('');
@@ -51,6 +52,7 @@ const ChatsScreen = (props) => {
     }
 
     const onSendMsg = (text) => {
+
         AsyncStorage.getItem('API_ACCESS_TOKEN')
             .then(token => {
                 AsyncStorage.getItem('USER_UID')
