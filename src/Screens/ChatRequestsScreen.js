@@ -77,10 +77,9 @@ const ChatRequestsScreen = (props) => {
                                     }`
                             }
                         }
-
                         axios(config).then((value) => {
                             value.data.data.users_by_pk.posts[0].posts_helpers.map((helper) => {
-                                const nameconfig = {
+                                const nameConfig = {
                                     data: {
                                         query:
                                             `query MyQuery {
@@ -92,11 +91,12 @@ const ChatRequestsScreen = (props) => {
                                     method: 'post',
                                     url: 'https://feelfree12.herokuapp.com/v1/graphql',
                                 };
-                                axios(nameconfig).then((name) => {
+                                axios(nameConfig).then((name) => {
                                     helperData.push({ name: name.data.data.users[0].first_name, ...helper });
                                     if (value.data.data.users_by_pk.posts[0].posts_helpers.length === helperData.length) {
                                         setShowList(true);
                                         setHelperList(helperData);
+                                        setRefresh(false);
                                     }
                                 }).catch(err => console.log('error', err));
                             })
@@ -139,8 +139,6 @@ const ChatRequestsScreen = (props) => {
             </View>
         } */}
         {showList ?
-            <View>
-                {console.log(showList, helperData)}
                 <FlatList
                     refreshing
                     refreshControl={
@@ -152,8 +150,7 @@ const ChatRequestsScreen = (props) => {
                         ({ item }) => <ChatRequest {...item} navigation={props.navigation} />
                     }
                     style={{ flex: 1 }}
-                />
-            </View>
+            />
             : null}
     </View>
 }

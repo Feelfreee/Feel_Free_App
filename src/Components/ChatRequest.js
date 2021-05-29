@@ -8,10 +8,8 @@ const { width, height } = Dimensions.get('screen');
 
 const ChatRequest = ({
     name,
-    icon,
     time,
-    description,
-    onChatClick,
+    text,
     navigation
 }) => {
     return <Card
@@ -30,7 +28,7 @@ const ChatRequest = ({
             titleStyle={{ color: Colors.theme }}
         />
         <Card.Content>
-            <Paragraph>{description}</Paragraph>
+            <Paragraph>{text}</Paragraph>
         </Card.Content>
 
         <Card.Actions style={{ justifyContent: 'center' }}>
