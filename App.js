@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { View, Text, StatusBar } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons'
 
@@ -103,27 +103,30 @@ const App = () => {
   </NavigationContainer>
 }
 
-const getAuthToken = async () => {
-  const token = await AsyncStorage.getItem('API_ACCESS_TOKEN')
-  return token;
-}
-
-const client = new ApolloClient({
-  link: new WebSocketLink({
-    uri: 'wss://feelfree12.herokuapp.com/v1/graphql',
-    options: {
-      reconnect: true,
-      connectionParams: {
-        headers: {
-          Authorization: `Bearer ${getAuthToken()}`
-        }
-      }
-    }
-  }),
-  cache: new InMemoryCache(),
-});
-
 export default () => {
+
+  const [token, setToken] = useState('');
+
+  const createApolloClient = () => {
+    AsyncStorage.getItem('API_ACCESS_TOKEN').then(token => setToken(token));
+
+    return new ApolloClient({
+      link: new WebSocketLink({
+        uri: 'wss://feelfree12.herokuapp.com/v1/graphql',
+        options: {
+          reconnect: true,
+          connectionParams: {
+            headers: {
+              Authorization: `Bearer ${token}`
+            }
+          }
+        }
+      }),
+      cache: new InMemoryCache(),
+    })
+  }
+  const client = createApolloClient();
+
   return <ApolloProvider client={client}>
     <App />
   </ApolloProvider>

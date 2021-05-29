@@ -1,10 +1,13 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { View, Text, TouchableOpacity, FlatList, TextInput, Image, Modal, TouchableWithoutFeedback } from 'react-native';
 import Header from '../Components/Header';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import Styles from '../Styles';
 import { Colors } from '../Constants/index';
 import { Card, Avatar } from 'react-native-paper';
+import { useSubscription, gql } from '@apollo/client';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import axios from 'axios';
 
 const messages = [
     {
@@ -17,20 +20,76 @@ const messages = [
     }
 ]
 
+let currrentChatData = [];
+let previousChatData = [];
+
 const ChatsScreen = (props) => {
 
     const [isModalVisible, setIsModalVisible] = useState(false);
+    const [input, setInput] = useState('');
+    const [chatsList, setChatsList] = useState([]);
+
+    useEffect(() => {
+        if (currrentChatData.length > previousChatData.length) {
+            setChatsList(currrentChatData);
+            console.log('currrentChatData', currrentChatData);
+            previousChatData = currrentChatData;
+        }
+    }, [currrentChatData]);
+
+    const { loading, error, data } = useSubscription(
+        gql`subscription {
+                chats(where: {room_id: {_eq: "${props.route.params.room_id}"}}) {
+                    text
+                    user_id
+                }
+            }`
+    )
+
+    console.log(chatsList);
+
+    if (loading) {
+        console.log('notification loading', loading)
+    }
+    if (error) {
+        console.error('notification error', error);
+    }
+    if (data) {
+        if (data.chats.length > 0) {
+            currrentChatData = data.chats;
+        }
+    }
+
+    const onSendMsg = (text) => {
+        AsyncStorage.getItem('API_ACCESS_TOKEN')
+            .then(token => {
+                AsyncStorage.getItem('USER_UID')
+                    .then(uid => {
+                        const config = {
+                            url: 'https://feelfree12.herokuapp.com/v1/graphql',
+                            method: 'post',
+                            headers: {
+                                Authorization: `Bearer ${token}`,
+                            },
+                            data: {
+                                query: `mutation {
+                                        insert_chats_one(object: {room_id: "${props.route.params.room_id}", text: "${text}", user_id: "${uid}"}) {
+                                            id
+                                    }
+                                }`
+                            }
+                        };
+                        axios(config).then((value) => console.log(value.data)).catch(e => console.log('error', e));
+                    })
+            })
+    }
 
     const SenderImageComponent = () => {
-        return <Avatar.Text size={30} />
-        // />
+        return <Avatar.Text size={40} style={{ marginTop: 5 }} />
     }
 
     const RecieverImageComponent = () => {
-        return <Image
-            // source={props.route.params.item.data.photoURL ? { uri: props.route.params.item.data.photoURL } : require('../assets/userImage.png')}
-            style={Styles.userImageStyle}
-        />
+        return <Avatar.Text size={40} label={props.route.params.name[0]} style={{ marginTop: 5 }} />
     }
 
     const SenderMessageComponent = ({ color, item, index }) => {
@@ -38,7 +97,7 @@ const ChatsScreen = (props) => {
             <View style={Styles.senderMessageStyle}>
                 <Text
                     style={Styles.senderMessageTextStyle}
-                >{item.message}
+                >{item.text}
                 </Text>
             </View>
             <SenderImageComponent />
@@ -50,26 +109,26 @@ const ChatsScreen = (props) => {
             <RecieverImageComponent />
             <Text
                 style={Styles.recieverMessageStyle}
-            >{item.message}</Text>
+            >{item.text}</Text>
         </View>
     }
 
     return <View style={{ flex: 1, paddingTop: 75, justifyContent: 'space-between' }}>
-        <Header name='Anonymous User'
+        <Header name={props.route.params.name}
             backRequired
             backHandler={() => props.navigation.goBack()}
-            additionalStyle={{ fontSize: 20, alignSelf: 'flex-start', marginLeft: 75 }}
+            additionalStyle={{ fontSize: 20, alignSelf: 'flex-start', marginLeft: 60 }}
         />
 
         <FlatList
-            data={messages}
+            data={chatsList}
             keyExtractor={item => item.senderEmail}
             renderItem={
                 ({ item, index }) => {
                     return <View>
                         {
                             // item.senderEmail == props.email
-                            item.senderEmail == 'asdfghjkl@gmail.com'
+                            item.user_id == props.route.params.uid
                                 ?
                                 <SenderMessageComponent color={'blue'} item={item} index={index} />
                                 :
@@ -89,23 +148,13 @@ const ChatsScreen = (props) => {
                     maxHeight: 200,
                 }}
                 autoFocus={true}
-                // value={}
-                onChangeText={
-                    newMsg => { }
-                }
+                value={input}
+                onChangeText={newMsg => setInput(newMsg)}
                 placeholderTextColor='black'
                 placeholder='Type something...'
                 multiline={true}
                 numberOfLines={5}
             />
-            {/* <TextInput
-                style={{ ...Styles.InputText, }}
-                // onChangeText={text => dispatch({ type: 'set_post_description', payload: text })}
-                placeholder={'Write a description ...'}
-                placeholderTextColor={'#A9A9A9'}
-                multiline={true}
-            // value={state.postDescription}
-            /> */}
             {props.isSending ?
                 <TouchableOpacity
                     style={Styles.sendButtonStyle}
@@ -116,7 +165,7 @@ const ChatsScreen = (props) => {
                 <TouchableOpacity
                     style={{ ...Styles.sendButtonStyle, padding: 0, marginRight: 10 }}
                     onPress={
-                        () => { }
+                        () => onSendMsg(input)
                     }
                 >
                     <Icon name='send' color={Colors.theme} size={45} />

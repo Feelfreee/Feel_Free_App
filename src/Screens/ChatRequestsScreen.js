@@ -127,7 +127,7 @@ const ChatRequestsScreen = (props) => {
                     data={helperList}
                     keyExtractor={(item) => { JSON.stringify(item) }}
                     renderItem={
-                        ({ item }) => <ChatRequest {...item} navigation={props.navigation} />
+                        ({ item }) => <ChatRequest {...item} post_id={props.route.params.id} navigation={props.navigation} />
                     }
                     style={{ flex: 1 }}
             />
