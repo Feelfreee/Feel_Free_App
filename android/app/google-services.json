@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "720693723704",
+    "project_id": "feelfreee-999fd",
+    "storage_bucket": "feelfreee-999fd.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:720693723704:android:9dbdf6306202a7e6ee9ccd",
+        "android_client_info": {
+          "package_name": "com.feelfree"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "720693723704-pidtr6ljq2gg3fk8s4punn64p9o8r9ca.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.feelfree",
+            "certificate_hash": "5573f3784abaa383d97e1c294f33340c53b6719a"
+          }
+        },
+        {
+          "client_id": "720693723704-3hrf1t08tq6s48da3pskl6cbe4js407j.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDnbR_VdprJpxhErczNmAGBkJbI1L41yRM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "720693723704-3hrf1t08tq6s48da3pskl6cbe4js407j.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

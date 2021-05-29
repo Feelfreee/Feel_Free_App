@@ -1,0 +1,61 @@
+import React, { useState } from 'react';
+import { View, Text, TouchableOpacity, Dimensions, Imagem, } from 'react-native';
+import { Colors } from '../Constants';
+import Styles from '../Styles';
+import { Avatar, Card, Paragraph } from 'react-native-paper';
+
+const { width, height } = Dimensions.get('window');
+
+const MyPosts = ({
+    random_name,
+    picture,
+    created_at,
+    description,
+    helperCount,
+    navigation
+}) => {
+
+    const [onImageErrorStyle, setOnImageErrorStyle] = useState({});
+
+    return <Card
+        style={{
+            borderRadius: 20,
+            margin: 10,
+            width: width * 0.9
+        }} elevation={10}
+    >
+        <Card.Title
+            title={random_name}
+            subtitle={created_at.substr(11, 5) + " " + created_at.substr(0, 10)}
+            left={() => <Avatar.Text size={45} label={random_name[0]} />}
+            titleStyle={{ color: Colors.theme }}
+        />
+        <Card.Content>
+            <Paragraph>{description}</Paragraph>
+        </Card.Content>
+
+        <Card.Cover source={{ uri: picture }}
+            style={onImageErrorStyle}
+            onError={() => setOnImageErrorStyle({ height: 0, width: 0 })}
+        />
+
+        <Card.Actions
+            style={{ justifyContent: 'space-between' }}
+        >
+            <Text
+                style={{ flex: 3, color: '#A7A7A7' }}
+            >
+                {helperCount} people wants to help
+            </Text>
+            <TouchableOpacity
+                type
+                onPress={() => { navigation.navigate('ChatRequests') }}
+                style={{ ...Styles.Button, marginTop: 0, marginBottom: 0, flex: 2 }}>
+                <Text style={{ fontSize: width * 0.040, color: 'white' }}>Helpers</Text>
+            </TouchableOpacity>
+        </Card.Actions>
+
+    </Card>
+}
+
+export default MyPosts;
