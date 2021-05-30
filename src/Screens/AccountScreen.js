@@ -1,5 +1,5 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import React from 'react';
+import React, { useState } from 'react';
 import { View, Text, Button, TouchableOpacity, Dimensions } from 'react-native';
 import Header from '../Components/Header';
 import Auth0 from 'react-native-auth0';
@@ -8,10 +8,46 @@ import firebase from '@react-native-firebase/app';
 import '@react-native-firebase/auth';
 const auth0 = new Auth0({ domain: "dev-d8qbyqhd.jp.auth0.com", clientId: 'PaZ7SVIRfOeXoDWJzogXmnRyRwAJeaxH' });
 import Styles from '../Styles';
+import { useEffect } from 'react';
+import axios from 'axios';
+import { Card, Paragraph } from 'react-native-paper';
+import Icon from 'react-native-vector-icons/MaterialIcons';
 
 const { width, height } = Dimensions.get('window');
 
 const AccountScreen = (props) => {
+
+    const [details, setDetails] = useState();
+
+    useEffect(() => {
+        AsyncStorage.getItem('API_ACCESS_TOKEN')
+            .then(token => {
+                AsyncStorage.getItem('USER_UID')
+                    .then(uid => {
+                        const config = {
+                            url: 'https://feelfree12.herokuapp.com/v1/graphql',
+                            method: 'post',
+                            headers: {
+                                Authorization: `Bearer ${token}`,
+                            },
+                            data: {
+                                query: `query MyQuery {
+  users {
+    first_name
+    email
+    picture
+    last_name
+    rating
+  }
+}`
+                            }
+                        };
+                        axios(config).then(value => {
+                            setDetails(value.data.data.users[0]);
+                        });
+                    })
+            })
+    }, [])
 
     const logout = () => {
         auth0
@@ -31,6 +67,25 @@ const AccountScreen = (props) => {
 
     return <View style={{ flex: 1, paddingTop: 75, alignItems: 'center' }}>
         <Header name='Account' />
+
+        {/* {details ? <View>
+            <Text style={{ fontSize: 20 }}>Name: {details.first_name} {details.last_name}</Text>
+            <Text style={{ fontSize: 20 }}></Text>
+            <Text style={{ fontSize: 20 }}>Rating: {details.rating} / 5</Text>
+        </View> : null */}
+
+        {
+            details ? <View style={{ height: 150, width: width * 0.9, marginVertical: 30 }}>
+                <Card >
+                    <Card.Title title={`${details.first_name} ${details.last_name}`} />
+                    <Card.Title title={`${details.email}`} />
+                    <Card.Title title={`Rating: ${details.rating}/5`} right={
+                        () => <Icon name='star' color='#FFD700' size={30} style={{ marginRight: 200 }} />
+                    } />
+                </Card>
+            </View> : null
+        }
+
         <TouchableOpacity
             onPress={logout}
             style={Styles.Button}>

@@ -53,6 +53,8 @@ const ChatsScreen = (props) => {
 
     const onSendMsg = (text) => {
 
+        setInput('')
+
         AsyncStorage.getItem('API_ACCESS_TOKEN')
             .then(token => {
                 AsyncStorage.getItem('USER_UID')
@@ -77,7 +79,7 @@ const ChatsScreen = (props) => {
     }
 
     const SenderImageComponent = () => {
-        return <Avatar.Text size={40} style={{ marginTop: 5 }} />
+        return <Avatar.Text size={40} style={{ marginTop: 5 }} label='A' />
     }
 
     const RecieverImageComponent = () => {
