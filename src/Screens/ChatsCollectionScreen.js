@@ -8,6 +8,7 @@ const ChatsCollectionScreen = (props) => {
 
     const [refresh, setRefresh] = useState(true);
     const [chatsList, setChatsList] = useState([]);
+    const [screenIndex, setScreenIndex] = useState(0);
 
     const fetchChat = () => {
         AsyncStorage.getItem('API_ACCESS_TOKEN')
@@ -51,7 +52,7 @@ const ChatsCollectionScreen = (props) => {
     }
 
     useEffect(() => {
-        fetchChat();
+        // fetchChat();
     }, [])
 
     return <View style={{
@@ -61,24 +62,50 @@ const ChatsCollectionScreen = (props) => {
         justifyContent: 'center'
     }}>
         <Header name='Chats' />
-        {chatsList ? chatsList.length > 0 ?
-            <FlatList
-                refreshing
-                refreshControl={
-                    <RefreshControl refreshing={refresh} onRefresh={() => fetchChat()} />
-                }
-                data={chatsList}
-                keyExtractor={(item) => { JSON.stringify(item) }}
-                renderItem={
-                    ({ item }) => <ChatRequest {...item} navigation={props.navigation} />
-                }
-                style={{ flex: 1 }}
 
-            /> : null :
-            < View style={{}}>
-                <Text style={{ fontSize: 25, fontWeight: 'bold', color: Colors.theme }}> You are not helping to any one </Text>
-            </View>
-        }
+        <View style={{
+            flexDirection: 'row',
+            justifyContent: 'space-around',
+            padding: 10,
+            paddingBottom: 20,
+            paddingTop: 0,
+            width,
+            backgroundColor: Colors.theme,
+            borderBottomRightRadius: 20,
+            borderBottomLeftRadius: 20,
+        }}>
+            <TouchableOpacity
+                style={Styles.postsButtonsStyle}
+                onPress={() => setScreenIndex(0)}>
+                <Text style={{
+                    fontWeight: 'bold',
+                    fontSize: 16,
+                    color: screenIndex == 0 ? 'black' : 'lightgrey'
+                }}>All Posts</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+                style={Styles.postsButtonsStyle}
+                onPress={() => setScreenIndex(1)}>
+                <Text style={{
+                    fontWeight: 'bold',
+                    fontSize: 16,
+                    color: screenIndex == 1 ? 'black' : 'lightgrey'
+                }}>My Posts</Text>
+            </TouchableOpacity>
+        </View>
+
+
+        <View style={{ flex: 1 }} >
+            {screenIndex === 0 ?
+                <OtherPostsScreen
+                    navigation={props.navigation}
+                />
+                : screenIndex === 1 ? <MyPostsScreen
+                    navigation={props.navigation}
+                />
+                    : null
+            }
+        </View>
     </View>
 }
 
