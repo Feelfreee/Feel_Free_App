@@ -33,10 +33,6 @@ const GetThreePhoneNumbers = (props) => {
             </TouchableOpacity>
         </View>
 
-
-
-
-
         <TextInput
             style={Styles.inputStyle}
             value={helperNumber}

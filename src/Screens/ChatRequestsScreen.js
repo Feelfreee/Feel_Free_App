@@ -122,20 +122,36 @@ const ChatRequestsScreen = (props) => {
         }}
     >
         <Header name="Helpers" backRequired backHandler={() => props.navigation.goBack()} />
-        {showList ?
-                <FlatList
-                    refreshing
-                    refreshControl={
-                        <RefreshControl refreshing={refresh} onRefresh={() => fetchHelpersList()} />
-                }
-                    data={helperList}
-                    keyExtractor={(item) => { JSON.stringify(item) }}
-                    renderItem={
-                        ({ item }) => <ChatRequest {...item} post_id={props.route.params.id} navigation={props.navigation} />
-                    }
-                    style={{ flex: 1 }}
-            />
-            : null}
+
+        {
+            showList ?
+                helperList && helperList.length != 0 ?
+                    <FlatList
+                        refreshing
+                        refreshControl={
+                            <RefreshControl refreshing={refresh} onRefresh={() => fetchHelpersList()} />
+                        }
+                        data={helperList}
+                        keyExtractor={(item) => { JSON.stringify(item) }}
+                        renderItem={
+                            ({ item }) => <ChatRequest {...item} post_id={props.route.params.id} navigation={props.navigation} />
+                        }
+                        style={{ flex: 1 }}
+                    /> :
+                    <View style={{ height: 50 }}>
+                        <Text style={{
+                            fontSize: 30,
+                            color: Colors.theme,
+                            textAlign: 'center'
+                        }}>No Chat Requests is available</Text>
+                    </View>
+                : <View style={{ height: 50 }}>
+                    <Text style={{
+                        fontSize: 30,
+                        color: Colors.theme,
+                    }}>No Chat Requests is available</Text>
+                </View>
+        }
     </View>
 }
 

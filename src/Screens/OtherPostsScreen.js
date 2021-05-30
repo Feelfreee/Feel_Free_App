@@ -3,6 +3,7 @@ import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import { View, Text, Button, FlatList, RefreshControl } from 'react-native';
 import OthersPost from '../Components/OthersPost';
+import { Colors } from '../Constants';
 
 const OtherPostsScreen = ({ navigation }) => {
 
@@ -23,10 +24,11 @@ const OtherPostsScreen = ({ navigation }) => {
                             },
                             data: {
                                 query: `mutation {
-  get_dashoard_posts(limit: 10, offset: 0, polarity: "asc", updated_at: "desc") {
-    posts
-  }
-}`}
+                                            get_dashoard_posts(limit: 10, offset: 0, polarity: "asc", updated_at: "desc") {
+                                                posts
+                                            }
+                                        }`
+                            }
                         }
                         axios(config).then(value => {
                             console.log(value.data.data.get_dashoard_posts.posts[0]);
@@ -43,18 +45,27 @@ const OtherPostsScreen = ({ navigation }) => {
 
 
 
-    return <View style={{ flex: 1, alignItems: 'center' }}>
-
-        <FlatList
-            refreshing
-            refreshControl={
-                <RefreshControl refreshing={refresh} onRefresh={() => fetchPosts()} />
-            }
-            keyExtractor={(item) => JSON.stringify(item)}
-            data={posts}
-            renderItem={({ item }) => <OthersPost {...item} helperCount={item.helpers.helper_id.length} navigation={navigation} />}
-            initialNumToRender={10}
-        />
+    return <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+        {
+            posts && posts.length != 0 ?
+                <FlatList
+                    refreshing
+                    refreshControl={
+                        <RefreshControl refreshing={refresh} onRefresh={() => fetchPosts()} />
+                    }
+                    keyExtractor={(item) => JSON.stringify(item)}
+                    data={posts}
+                    renderItem={({ item }) => <OthersPost {...item} helperCount={item.helpers.helper_id.length} navigation={navigation} />}
+                    initialNumToRender={10}
+                /> :
+                <View style={{ height: 50 }}>
+                    <Text style={{
+                        fontSize: 30,
+                        color: Colors.theme,
+                        textAlign: 'center'
+                    }}>No Post is available</Text>
+                </View>
+        }
     </View>
 }
 

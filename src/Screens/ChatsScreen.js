@@ -28,6 +28,7 @@ const ChatsScreen = (props) => {
     const [isModalVisible, setIsModalVisible] = useState(false);
     const [input, setInput] = useState('');
     const [chatsList, setChatsList] = useState([]);
+    const [newInputHeight, setNewInputHeight] = useState(50)
 
     const { loading, error, data } = useSubscription(
         gql`subscription {
@@ -85,13 +86,12 @@ const ChatsScreen = (props) => {
     const Avatar_ME = () => {
         return <Avatar.Text size={40} style={{ marginTop: 5 }} label='Me' />
     }
-
     const SenderImageComponent = () => {
         return <Avatar_ME />
     }
 
     const RecieverImageComponent = () => {
-        return props.route.params.name ? <Avatar.Text size={40} style={{ marginTop: 5 }} label={props.route.params.name} />
+        return props.route.params.name ? <Avatar.Text size={40} style={{ marginTop: 5 }} label={props.route.params.name[0]} />
             : <Avatar_A />
 
     }
@@ -127,11 +127,11 @@ const ChatsScreen = (props) => {
         <FlatList
             data={chatsList}
             keyExtractor={item => item.senderEmail}
+            style={{ paddingHorizontal: 10 }}
             renderItem={
                 ({ item, index }) => {
                     return <View>
                         {
-                            // item.senderEmail == props.email
                             item.user_id == props.route.params.uid
                                 ?
                                 <SenderMessageComponent color={'blue'} item={item} index={index} />
@@ -141,15 +141,13 @@ const ChatsScreen = (props) => {
                     </View>
                 }
             }
-            style={{ paddingHorizontal: 10 }}
         />
 
         <View style={Styles.inputWidget}>
             <TextInput
                 style={{
                     ...Styles.inputStyle,
-                    minHeight: 50,
-                    maxHeight: 200,
+                    height: newInputHeight
                 }}
                 autoFocus={true}
                 value={input}
@@ -158,6 +156,7 @@ const ChatsScreen = (props) => {
                 placeholder='Type something...'
                 multiline={true}
                 numberOfLines={5}
+                onContentSizeChange={(e) => setNewInputHeight(e.nativeEvent.contentSize.height)}
             />
             {props.isSending ?
                 <TouchableOpacity
@@ -194,12 +193,10 @@ const ChatsScreen = (props) => {
             <TouchableWithoutFeedback onPress={() => setIsModalVisible(false)}>
                 <View style={{
                     flex: 1,
-                    // zIndex: 1,
                 }} >
                     <TouchableOpacity style={{
                         height: 175,
                         width: 250,
-                        // backgroundColor: 'red',
                         position: 'absolute',
                         bottom: 70,
                         right: 20,

@@ -10,7 +10,7 @@ export default StyleSheet.create({
         textAlignVertical: 'top',
         fontSize: width * 0.038,
         padding: width * 0.030,
-        borderRadius: height * 0.010,
+        borderRadius: height * 0.02,
         height: height * 0.12,
         width: width - width * 0.1,
         marginHorizontal: width * 0.020,
@@ -30,7 +30,7 @@ export default StyleSheet.create({
         alignItems: 'center',
         backgroundColor: 'white',
         marginTop: width * 0.034,
-        borderRadius: height * 0.010,
+        borderRadius: height * 0.020,
         paddingStart: width * 0.030,
         flexDirection: 'row'
     },
@@ -38,7 +38,7 @@ export default StyleSheet.create({
         backgroundColor: Colors.theme,
         width: width - width * 0.1,
         height: height * 0.05,
-        borderRadius: width * 0.012,
+        borderRadius: width * 0.2,
         overflow: 'hidden',
         alignItems: 'center',
         justifyContent: 'center',
@@ -47,7 +47,7 @@ export default StyleSheet.create({
         marginBottom: width * 0.040
     },
     attachUpload: {
-        borderRadius: height * 0.010,
+        borderRadius: height * 0.020,
         borderTopLeftRadius: 0,
         borderBottomLeftRadius: 0,
         height: 50,

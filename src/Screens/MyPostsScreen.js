@@ -4,39 +4,7 @@ import React, { useState } from 'react';
 import { useEffect } from 'react';
 import { View, Text, Button, Dimensions, FlatList, RefreshControl } from 'react-native';
 import MyPosts from '../Components/MyPosts';
-
-const posts = [
-    {
-        name: 'asdfghjkl',
-        time: 'time-date',
-        description: 'qwertyuioplkmnbvcxzsasdfghjk',
-        helperCount: 10,
-    },
-    {
-        name: 'qwertyuiop',
-        time: 'time-date',
-        description: 'qwertyuioplkmnbvcxzsasdfghjk',
-        helperCount: 10,
-    },
-    {
-        name: 'zxcvbnm',
-        time: 'time-date',
-        description: 'qwertyuioplkmnbvcxzsasdfghjk',
-        helperCount: 10,
-    },
-    {
-        name: 'azxsdc',
-        time: 'time-date',
-        description: 'qwertyuioplkmnbvcxzsasdfghjk',
-        helperCount: 10,
-    },
-    {
-        name: 'mlkjhnbh',
-        time: 'time-date',
-        description: 'qwertyuioplkmnbvcxzsasdfghjk',
-        helperCount: 10,
-    }
-]
+import { Colors } from '../Constants'
 
 const MyPostsScreen = ({ navigation }) => {
 
@@ -56,19 +24,18 @@ const MyPostsScreen = ({ navigation }) => {
                             },
                             data: {
                                 query: `query MyQuery {
-  posts(order_by: {created_at: desc}) {
-    created_at
-    description
-    id
-    picture
-    posted_by
-    random_name
-    posts_helpers {
-      id
-    }
-  }
-}
-`
+                                          posts(order_by: {created_at: desc}) {
+                                            created_at
+                                            description
+                                            id
+                                            picture
+                                            posted_by
+                                            random_name
+                                            posts_helpers {
+                                              id
+                                            }
+                                          }
+                                        }`
                             }
                         }
                         axios(config).then(value => {
@@ -83,16 +50,26 @@ const MyPostsScreen = ({ navigation }) => {
         fetchPosts();
     }, [])
 
-    return <View style={{ flex: 1, alignItems: 'center' }}>
-        <FlatList
-            refreshing
-            refreshControl={
-                <RefreshControl refreshing={refresh} onRefresh={() => fetchPosts()} />
-            }
-            keyExtractor={(item) => JSON.stringify(item)}
-            data={posts}
-            renderItem={({ item }) => <MyPosts {...item} helperCount={item.posts_helpers.length} navigation={navigation} />}
-        />
+    return <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+        {
+            posts && posts.length != 0 ?
+                <FlatList
+                    refreshing
+                    refreshControl={
+                        <RefreshControl refreshing={refresh} onRefresh={() => fetchPosts()} />
+                    }
+                    keyExtractor={(item) => JSON.stringify(item)}
+                    data={posts}
+                    renderItem={({ item }) => <MyPosts {...item} helperCount={item.posts_helpers.length} navigation={navigation} />}
+                /> :
+                <View style={{ height: 50 }}>
+                    <Text style={{
+                        fontSize: 30,
+                        color: Colors.theme,
+                        textAlign: 'center'
+                    }}>No Post is available</Text>
+                </View>
+        }
     </View>
 }
 

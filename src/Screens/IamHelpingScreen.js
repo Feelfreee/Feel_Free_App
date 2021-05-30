@@ -6,7 +6,7 @@ import { View, FlatList, RefreshControl, Dimensions, TouchableOpacity, Text } fr
 import ChatRequest from '../Components/ChatRequest';
 import { Colors } from '../Constants';
 import Styles from '../Styles';
-import { Card, Avatar, Paragraph } from 'react-native-paper'
+import { Card, Avatar } from 'react-native-paper'
 
 const { width, height } = Dimensions.get('screen');
 
@@ -32,15 +32,15 @@ const IamHelpingScreen = ({ navigation }) => {
                             },
                             data: {
                                 query: `{
-                                      room_candidates(where: {created_by: {_neq: "${uid}"}}) {
+                                      room_candidates(where: {created_by: {_neq: "${uid}"}}, order_by: {created_at: desc}) {
                                         created_by
                                         post_id
                                         room_id
+                                        created_at
                                       }
                                     }`
                             }
                         }
-                        // console.log(config);
                         axios(config).then(value => {
                             console.log(value.data.data.room_candidates);
                             setPosts(value.data.data.room_candidates);
@@ -54,10 +54,7 @@ const IamHelpingScreen = ({ navigation }) => {
         fetchPosts();
     }, [])
 
-    console.log(posts)
-
     const Items = ({ room_id }) => {
-        // const { width, height } = Dimensions.get('screen');
         return <Card
             style={{
                 borderRadius: 20,
@@ -85,16 +82,27 @@ const IamHelpingScreen = ({ navigation }) => {
         </Card>
     }
 
-    return <View style={{ flex: 1, alignItems: 'center' }}>
-        <FlatList
-            refreshing
-            refreshControl={
-                <RefreshControl refreshing={refresh} onRefresh={() => fetchPosts()} />
-            }
-            keyExtractor={(item) => JSON.stringify(item)}
-            data={posts}
-            renderItem={({ item }) => <Items {...item} />}
-        />
+    return <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+
+        {
+            posts && posts.length != 0 ?
+                <FlatList
+                    refreshing
+                    refreshControl={
+                        <RefreshControl refreshing={refresh} onRefresh={() => fetchPosts()} />
+                    }
+                    keyExtractor={(item) => JSON.stringify(item)}
+                    data={posts}
+                    renderItem={({ item }) => <Items {...item} />}
+                /> :
+                <View style={{ height: 50 }}>
+                    <Text style={{
+                        fontSize: 30,
+                        color: Colors.theme,
+                        textAlign: 'center'
+                    }}>You're not helping to anyone</Text>
+                </View>
+        }
     </View>
 }
 
