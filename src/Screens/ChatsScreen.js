@@ -199,7 +199,7 @@ const ChatsScreen = (props) => {
                             elevation={5}
                         >
                             <TouchableOpacity
-                                // onPress={ }
+                                onPress={() => props.navigation.navigate('ReportHelper', { from: 'report', helper_id: props.route.params.helper_id })}
                                 style={{
                                     height: 75,
                                     width: 230,
@@ -209,9 +209,10 @@ const ChatsScreen = (props) => {
                                     borderBottomWidth: 1,
                                 }}
                             >
-                                <Text style={{}}>Report Helper</Text>
+                                <Text style={{ fontSize: 20 }}>Report Helper</Text>
                             </TouchableOpacity>
                             <TouchableOpacity
+                                onPress={() => props.navigation.navigate('ReportHelper', { from: 'end', helper_id: props.route.params.helper_id })}
                                 style={{
                                     height: 75,
                                     width: 230,
@@ -219,7 +220,7 @@ const ChatsScreen = (props) => {
                                     alignItems: 'center'
                                 }}
                             >
-                                <Text>End Chat</Text>
+                                <Text style={{ fontSize: 20 }}>End Chat</Text>
                             </TouchableOpacity>
                         </Card>
                     </TouchableOpacity>
@@ -231,3 +232,9 @@ const ChatsScreen = (props) => {
 }
 
 export default ChatsScreen;
+
+// mutation {
+//     rate_helper(helper_id: "", rating: "") {
+//         message
+//     }
+// }

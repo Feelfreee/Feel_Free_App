@@ -21,6 +21,7 @@ import GetThreePhoneNumbers from './src/Screens/GetThreePhoneNumbers';
 import { ApolloClient, InMemoryCache, ApolloProvider } from '@apollo/client';
 import { WebSocketLink } from '@apollo/client/link/ws';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import ReportHelperScreen from './src/Screens/ReportHelper';
 
 
 const PostsStack = createStackNavigator();
@@ -28,7 +29,7 @@ const MainBottomTab = createBottomTabNavigator();
 const StackTab = createStackNavigator();
 
 const PostsNavigatorContainer = () => (
-  <PostsStack.Navigator headerMode='none'>
+  <PostsStack.Navigator headerMode='none' initialRouteName='PostsMain'>
     <PostsStack.Screen name='PostsMain' component={PostsScreen} options={{}} />
     <PostsStack.Screen name='ApplyToHelp' component={ApplyToHelpScreen} options={{}} />
     <PostsStack.Screen name='ReportPost' component={ReportPostScreen} options={{}} />
@@ -48,6 +49,7 @@ const MainBottomTabNavigator = () => (
       ,
       showLabel: false
     }}
+    initialRouteName='Posts'
   >
     <MainBottomTab.Screen
       name='Posts'
@@ -98,6 +100,7 @@ const App = () => {
       <StackTab.Screen name='GetThreeNo' component={GetThreePhoneNumbers} options={{}} />
       <StackTab.Screen name='Main' component={MainBottomTabNavigator} options={{}} />
       <StackTab.Screen name='Chats' component={ChatsScreen} options={{}} />
+      <StackTab.Screen name='ReportHelper' component={ReportHelperScreen} options={{}} />
     </StackTab.Navigator>
     <StatusBar backgroundColor={Colors.theme} />
   </NavigationContainer>

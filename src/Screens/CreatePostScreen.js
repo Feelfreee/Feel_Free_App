@@ -81,50 +81,85 @@ const CreatePostScreen = (props) => {
 
     const onSubmit = () => {
         dispatch({ type: 'set_loader', payload: true });
-        AsyncStorage.getItem('USER_UID').then(uid => {
-            if (uid) {
-                firebase.storage()
-                    .ref('users')
-                    .child(uid + `/posts/${uuidv4()}`)
-                    .putFile(state.fileUrl)
-                    .then((data) => {
-                        firebase.storage().ref(data.metadata.fullPath)
-                            .getDownloadURL()
-                            .then(async (imageURL) => {
-                                const token = await AsyncStorage.getItem('API_ACCESS_TOKEN');
-                                if (token) {
-                                    console.log(token);
-                                    const config = {
-                                        url: 'https://feelfree12.herokuapp.com/v1/graphql',
-                                        method: 'post',
-                                        headers: {
-                                            Authorization: `Bearer ${token}`,
-                                        },
-                                        data: {
-                                            query: `mutation {
+        if (state.fileUrl !== '') {
+            AsyncStorage.getItem('USER_UID').then(uid => {
+                if (uid) {
+                    firebase.storage()
+                        .ref('users')
+                        .child(uid + `/posts/${uuidv4()}`)
+                        .putFile(state.fileUrl)
+                        .then((data) => {
+                            firebase.storage().ref(data.metadata.fullPath)
+                                .getDownloadURL()
+                                .then(async (imageURL) => {
+                                    const token = await AsyncStorage.getItem('API_ACCESS_TOKEN');
+                                    if (token) {
+                                        console.log(token);
+                                        const config = {
+                                            url: 'https://feelfree12.herokuapp.com/v1/graphql',
+                                            method: 'post',
+                                            headers: {
+                                                Authorization: `Bearer ${token}`,
+                                            },
+                                            data: {
+                                                query: `mutation {
                                               insert_posts(objects: {description: "${state.postDescription}", picture: "${imageURL}", posted_by: "${uid}", random_name: "${shortNames()}"}) {
                                                 affected_rows
                                               }
                                             }`
+                                            }
                                         }
+                                        axios(config)
+                                            .then(res => {
+                                                console.log('res');
+                                                dispatch({ type: 'clear' });
+                                                ToastAndroid.showWithGravity('Post Created', 2000, ToastAndroid.BOTTOM);
+                                            })
+                                            .catch(err => {
+                                                console.log(err);
+                                                ToastAndroid.showWithGravity('Error Occured', 2000, ToastAndroid.BOTTOM);
+                                            })
                                     }
-                                    axios(config)
-                                        .then(res => {
-                                            console.log('res');
-                                            dispatch({ type: 'clear' });
-                                            ToastAndroid.showWithGravity('Post Created', 2000, ToastAndroid.BOTTOM);
-                                        })
-                                        .catch(err => {
-                                            console.log(err);
-                                            ToastAndroid.showWithGravity('Error Occured', 2000, ToastAndroid.BOTTOM);
-                                        })
+                                })
+                                .catch(e => console.log(e));
+                        })
+                        .catch(e => console.log(e));
+                }
+            })
+        }
+        else {
+            AsyncStorage.getItem('API_ACCESS_TOKEN')
+                .then(token => {
+                    AsyncStorage.getItem('USER_UID')
+                        .then(uid => {
+                            const config = {
+                                url: 'https://feelfree12.herokuapp.com/v1/graphql',
+                                method: 'post',
+                                headers: {
+                                    Authorization: `Bearer ${token}`,
+                                },
+                                data: {
+                                    query: `mutation {
+                                              insert_posts(objects: {description: "${state.postDescription}", picture: ${null}, posted_by: "${uid}", random_name: "${shortNames()}"}) {
+                                                affected_rows
+                                              }
+                                            }`
                                 }
-                            })
-                            .catch(e => console.log(e));
-                    })
-                    .catch(e => console.log(e));
-            }
-        })
+                            };
+
+                            axios(config)
+                                .then(res => {
+                                    console.log('res');
+                                    dispatch({ type: 'clear' });
+                                    ToastAndroid.showWithGravity('Post Created', 2000, ToastAndroid.BOTTOM);
+                                })
+                                .catch(err => {
+                                    console.log(err);
+                                    ToastAndroid.showWithGravity('Error Occured', 2000, ToastAndroid.BOTTOM);
+                                })
+                        })
+                })
+        }
     }
 
     return <View

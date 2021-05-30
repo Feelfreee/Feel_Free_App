@@ -1,8 +1,12 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import React, { useEffect, useState } from 'react';
-import { View, Text, Button } from 'react-native';
+import { View, Text, Dimensions, TouchableOpacity } from 'react-native';
 import Header from '../Components/Header';
 import axios from 'axios';
+import Styles from '../Styles';
+import { Colors } from '../Constants'
+
+const { width, height } = Dimensions.get('screen');
 
 const ChatsCollectionScreen = (props) => {
 
@@ -81,7 +85,7 @@ const ChatsCollectionScreen = (props) => {
                     fontWeight: 'bold',
                     fontSize: 16,
                     color: screenIndex == 0 ? 'black' : 'lightgrey'
-                }}>All Posts</Text>
+                }}>My Helpers</Text>
             </TouchableOpacity>
             <TouchableOpacity
                 style={Styles.postsButtonsStyle}
@@ -90,21 +94,21 @@ const ChatsCollectionScreen = (props) => {
                     fontWeight: 'bold',
                     fontSize: 16,
                     color: screenIndex == 1 ? 'black' : 'lightgrey'
-                }}>My Posts</Text>
+                }}>I'm Helping</Text>
             </TouchableOpacity>
         </View>
 
 
         <View style={{ flex: 1 }} >
-            {screenIndex === 0 ?
-                <OtherPostsScreen
-                    navigation={props.navigation}
-                />
+            {/* {screenIndex === 0 ?
+                // <OtherPostsScreen
+                //     navigation={props.navigation}
+                // />
                 : screenIndex === 1 ? <MyPostsScreen
                     navigation={props.navigation}
                 />
                     : null
-            }
+            } */}
         </View>
     </View>
 }

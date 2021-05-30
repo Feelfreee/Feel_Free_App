@@ -56,25 +56,23 @@ const MyPostsScreen = ({ navigation }) => {
                             },
                             data: {
                                 query: `query MyQuery {
-                                          users_by_pk(uid: "${uid}") {
-                                            posts(order_by: {created_at: desc}) {
-                                              created_at
-                                              description
-                                              id
-                                              picture
-                                              posted_by
-                                              random_name
-                                              updated_at
-                                              posts_helper {
-                                                helper_id
-                                              }
-                                            }
-                                          }
-                                        }`
+  posts(order_by: {created_at: desc}) {
+    created_at
+    description
+    id
+    picture
+    posted_by
+    random_name
+    posts_helpers {
+      id
+    }
+  }
+}
+`
                             }
                         }
                         axios(config).then(value => {
-                            setPosts(value.data.data.users_by_pk.posts);
+                            setPosts(value.data.data.posts);
                             setRefresh(false);
                         }).catch(e => console.log(e));
                     })
@@ -93,7 +91,7 @@ const MyPostsScreen = ({ navigation }) => {
             }
             keyExtractor={(item) => JSON.stringify(item)}
             data={posts}
-            renderItem={({ item }) => <MyPosts {...item} navigation={navigation} />}
+            renderItem={({ item }) => <MyPosts {...item} helperCount={item.posts_helpers.length} navigation={navigation} />}
         />
     </View>
 }

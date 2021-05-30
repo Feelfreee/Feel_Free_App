@@ -38,7 +38,7 @@ const PostsScreen = (props) => {
                     fontWeight: 'bold',
                     fontSize: 16,
                     color: screenIndex == 0 ? 'black' : 'lightgrey'
-                }}>My Posts</Text>
+                }}>All Posts</Text>
             </TouchableOpacity>
             <TouchableOpacity
                 style={Styles.postsButtonsStyle}
@@ -47,17 +47,17 @@ const PostsScreen = (props) => {
                     fontWeight: 'bold',
                     fontSize: 16,
                     color: screenIndex == 1 ? 'black' : 'lightgrey'
-                }}>All Posts</Text>
+                }}>My Posts</Text>
             </TouchableOpacity>
         </View>
 
 
         <View style={{ flex: 1 }} >
             {screenIndex === 0 ?
-                <MyPostsScreen
+                <OtherPostsScreen
                     navigation={props.navigation}
                 />
-                : screenIndex === 1 ? <OtherPostsScreen
+                : screenIndex === 1 ? <MyPostsScreen
                     navigation={props.navigation}
                 />
                     : null

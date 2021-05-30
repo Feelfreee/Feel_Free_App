@@ -38,7 +38,7 @@ const ChatRequest = ({
                         };
                         axios(config).then(value => {
                             console.log()
-                            navigation.navigate('Chats', { room_id: value.data.data.create_room.roomId, name, uid })
+                            navigation.navigate('Chats', { room_id: value.data.data.create_room.roomId, name, uid, helper_id })
                         });
                     })
             })

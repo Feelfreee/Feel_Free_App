@@ -55,21 +55,16 @@ const OtherPostsScreen = ({ navigation }) => {
                                 Authorization: `Bearer ${token}`,
                             },
                             data: {
-                                query: `{
-                                      posts(where: {_not: {user: {uid: {_eq: "${uid}"}}}}) {
-                                        description
-                                        id
-                                        picture
-                                        posted_by
-                                        created_at
-                                        random_name
-                                      }
-                                    }`
-                            }
+                                query: `mutation {
+  get_dashoard_posts(limit: 10, offset: 0, polarity: "asc", updated_at: "desc") {
+    posts
+  }
+}`}
+
                         }
                         axios(config).then(value => {
                             console.log(value);
-                            setPosts(value.data.data.posts);
+                            setPosts(value.data.data.get_dashoard_posts.posts);
                             setRefresh(false);
                         })
                     })
@@ -91,8 +86,8 @@ const OtherPostsScreen = ({ navigation }) => {
             }
             keyExtractor={(item) => JSON.stringify(item)}
             data={posts}
-            renderItem={({ item }) => <OthersPost {...item} navigation={navigation} />}
-
+            renderItem={({ item }) => <OthersPost {...item} helperCount={item.helpers.helper_id.length} navigation={navigation} />}
+            initialNumToRender={10}
         />
     </View>
 }
