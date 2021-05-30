@@ -69,7 +69,7 @@ const ChatRequest = ({
                 type
                 onPress={() => createRoom()}
                 style={{ ...Styles.Button, width: width * 0.8, marginTop: 10 }}>
-                <Text style={{ fontSize: width * 0.040, color: 'white' }}>Chat</Text>
+                <Text style={{ fontSize: 20, fontWeight: 'bold', color: 'white' }}>Chat</Text>
             </TouchableOpacity>
         </Card.Actions>
 

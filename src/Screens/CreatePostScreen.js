@@ -195,7 +195,7 @@ const CreatePostScreen = (props) => {
             {!state.loader ? <TouchableOpacity
                 onPress={onSubmit}
                 style={Styles.Button}>
-                <Text style={{ fontSize: width * 0.040, color: 'white' }}>Submit</Text>
+                    <Text style={{ fontSize: 20, fontWeight: 'bold', color: 'white' }}>Submit</Text>
             </TouchableOpacity> : <View style={Styles.Button}><ActivityIndicator size='large' color='white' /></View>}
 
             </View>

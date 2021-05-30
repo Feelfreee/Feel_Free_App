@@ -58,7 +58,7 @@ const ReportHelperScreen = (props) => {
             style={Styles.Button}
             onPress={() => onSubmit()}
         >
-            <Text style={{ color: "white", fontWeight: 'bold', fontSize: 16 }}>Submit Rating</Text>
+            <Text style={{ fontSize: 20, fontWeight: 'bold', color: 'white' }}>Submit Rating</Text>
         </TouchableOpacity>
     </View>
 }

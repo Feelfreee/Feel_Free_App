@@ -84,7 +84,7 @@ const AccountScreen = (props) => {
             <TouchableOpacity
                 onPress={logout}
                 style={Styles.Button}>
-                <Text style={{ fontSize: width * 0.040, color: 'white' }}>Logout</Text>
+                <Text style={{ fontSize: 20, fontWeight: 'bold', color: 'white' }}>Logout</Text>
             </TouchableOpacity>
         </ScrollView>
     </View>

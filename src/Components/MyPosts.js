@@ -52,7 +52,7 @@ const MyPosts = ({
             <TouchableOpacity
                 onPress={() => { navigation.navigate('ChatRequests', { navigation, id }) }}
                 style={{ ...Styles.Button, marginTop: 0, marginBottom: 0, flex: 2 }}>
-                <Text style={{ fontSize: width * 0.040, color: 'white' }}>Helpers</Text>
+                <Text style={{ fontSize: 20, fontWeight: 'bold', color: 'white' }}>Helpers</Text>
             </TouchableOpacity>
         </Card.Actions>
 

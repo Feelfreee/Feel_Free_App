@@ -73,7 +73,7 @@ const AuthScreen = (props) => {
             onPress={onLogin}
             style={{ ...Styles.Button, borderRadius: 20 }}
         >
-            <Text style={{ fontSize: width * 0.040, color: 'white' }}>Login / Signup</Text>
+            <Text style={{ fontSize: 20, fontWeight: 'bold', color: 'white' }}>Login / Signup</Text>
         </TouchableOpacity>
     </View>
 }
