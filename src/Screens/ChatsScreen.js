@@ -232,9 +232,3 @@ const ChatsScreen = (props) => {
 }
 
 export default ChatsScreen;
-
-// mutation {
-//     rate_helper(helper_id: "", rating: "") {
-//         message
-//     }
-// }
