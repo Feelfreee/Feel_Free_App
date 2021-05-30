@@ -53,14 +53,14 @@ const OthersPost = ({
                     console.log('all helpers');
                     navigation.navigate('ApplyToHelp', { id })
                 }}>
-                    <Icon name='message' size={height * 0.05} color={Colors.theme} />
+                    <Icon name='message' size={40} color={Colors.theme} />
                 </TouchableOpacity>
                 <TouchableOpacity onPress={() => {
                     console.log('all helpers');
                     // navigation.navigate('ReportPost')
                     ToastAndroid.showWithGravity('Coming Soon!', 2000, ToastAndroid.BOTTOM);
                 }}>
-                    <Icon name='bug-report' size={height * 0.05} color={Colors.theme} />
+                    <Icon name='bug-report' size={40} color={Colors.theme} />
                 </TouchableOpacity>
             </View>
         </Card.Actions>

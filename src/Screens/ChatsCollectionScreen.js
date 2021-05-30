@@ -6,7 +6,7 @@ import { Colors } from '../Constants'
 import IamHelpingScreen from './IamHelpingScreen';
 import MyHelpersScreen from './MyHelpersScreen';
 
-const { width, height } = Dimensions.get('screen');
+const { width, height } = Dimensions.get('window');
 
 const ChatsCollectionScreen = (props) => {
 
@@ -26,7 +26,7 @@ const ChatsCollectionScreen = (props) => {
             padding: 10,
             paddingBottom: 20,
             paddingTop: 0,
-            width,
+            width: width,
             backgroundColor: Colors.theme,
             borderBottomRightRadius: 20,
             borderBottomLeftRadius: 20,

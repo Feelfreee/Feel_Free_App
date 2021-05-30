@@ -7,7 +7,7 @@ const { width, height } = Dimensions.get('window');
 
 const Header = ({ children, name, backRequired, backHandler, additionalStyle }) => {
     return <View
-        style={Styles.headerContainerStyle}
+        style={{ ...Styles.headerContainerStyle }}
     >
         {/* <Image
             source={require('../Assets/Logo.png')}

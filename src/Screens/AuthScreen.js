@@ -10,7 +10,7 @@ import { Colors } from '../Constants';
 const auth0 = new Auth0({ domain: "dev-d8qbyqhd.jp.auth0.com", clientId: 'PaZ7SVIRfOeXoDWJzogXmnRyRwAJeaxH' });
 import Styles from '../Styles';
 
-const { width, height } = Dimensions.get('screen');
+const { width, height } = Dimensions.get('window');
 
 const AuthScreen = (props) => {
 

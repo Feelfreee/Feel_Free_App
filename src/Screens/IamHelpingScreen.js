@@ -8,7 +8,7 @@ import { Colors } from '../Constants';
 import Styles from '../Styles';
 import { Card, Avatar } from 'react-native-paper'
 
-const { width, height } = Dimensions.get('screen');
+const { width, height } = Dimensions.get('window');
 
 const IamHelpingScreen = ({ navigation }) => {
 

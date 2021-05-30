@@ -3,7 +3,7 @@ import React, { useEffect } from 'react';
 import { View, Image, Dimensions, StatusBar, Text } from 'react-native';
 import { Colors } from '../Constants';
 
-const { width, height } = Dimensions.get('screen');
+const { width, height } = Dimensions.get('window');
 
 const SplashScreen = (props) => {
 

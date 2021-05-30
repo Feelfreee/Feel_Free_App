@@ -166,6 +166,7 @@ const CreatePostScreen = (props) => {
         style={{ flex: 1, paddingTop: 75, padding: width * 0.01, alignItems: 'center' }}
     >
         <Header name="Create a Post" />
+        <ScrollView>
         <View style={{ marginTop: height * 0.1 }}>
             <TextInput
                 style={Styles.InputText}
@@ -197,7 +198,8 @@ const CreatePostScreen = (props) => {
                 <Text style={{ fontSize: width * 0.040, color: 'white' }}>Submit</Text>
             </TouchableOpacity> : <View style={Styles.Button}><ActivityIndicator size='large' color='white' /></View>}
 
-        </View>
+            </View>
+        </ScrollView>
 
     </View >
 }

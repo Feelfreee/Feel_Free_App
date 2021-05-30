@@ -1,6 +1,6 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import React, { useState } from 'react';
-import { View, Text, Button, TouchableOpacity, Dimensions } from 'react-native';
+import { View, Text, Button, TouchableOpacity, Dimensions, ScrollView } from 'react-native';
 import Header from '../Components/Header';
 import Auth0 from 'react-native-auth0';
 import '../Components/FirebaseConfig'
@@ -56,42 +56,37 @@ const AccountScreen = (props) => {
             .then(() => {
                 console.log('Log out');
                 firebase.auth().signOut().then((value) =>
-                AsyncStorage.removeItem('API_ACCESS_TOKEN').then(() => {
-                    AsyncStorage.removeItem("USER_UID").then(() =>
-                        props.navigation.navigate('Auth')
-                    )
-                })).catch(e => console.log(e));
+                    AsyncStorage.removeItem('API_ACCESS_TOKEN').then(() => {
+                        AsyncStorage.removeItem("USER_UID").then(() =>
+                            props.navigation.navigate('Auth')
+                        )
+                    })).catch(e => console.log(e));
             })
             .catch((e) => setError(e));
     }
 
     return <View style={{ flex: 1, paddingTop: 75, alignItems: 'center' }}>
         <Header name='Account' />
+        <ScrollView style={{ alignSelf: 'center', width }} contentContainerStyle={{ alignItems: 'center' }}>
+            {
+                details ? <View style={{ height: 150, width: width * 0.9, marginVertical: 30 }}>
+                    <Card style={{ borderRadius: 20, padding: 30, paddingStart: 10 }} elevation={20}>
+                        <Text style={{ fontWeight: '900', fontSize: 20, height: 40, marginStart: 20 }}>{`${details.first_name} ${details.last_name}`}</Text>
+                        <Text style={{ fontWeight: '900', fontSize: 20, height: 40, marginStart: 20 }}>{`${details.email}`}</Text>
+                        <View style={{ height: 40, marginStart: 20, flexDirection: 'row', width: width * 0.5 }}>
+                            <Text style={{ fontWeight: '900', fontSize: 20 }}>{`Rating: ${details.rating}/5`}</Text>
+                            <Icon name='star' size={30} color='#FFD700' style={{ paddingStart: 5 }} />
+                        </View>
+                    </Card>
+                </View> : null
+            }
 
-        {/* {details ? <View>
-            <Text style={{ fontSize: 20 }}>Name: {details.first_name} {details.last_name}</Text>
-            <Text style={{ fontSize: 20 }}></Text>
-            <Text style={{ fontSize: 20 }}>Rating: {details.rating} / 5</Text>
-        </View> : null */}
-
-        {
-            details ? <View style={{ height: 150, width: width * 0.9, marginVertical: 30 }}>
-                <Card style={{ borderRadius: 20, padding: 30, paddingStart: 10 }} elevation={20}>
-                    <Text style={{ fontWeight: '900', fontSize: 20, height: 40, marginStart: 20 }}>{`${details.first_name} ${details.last_name}`}</Text>
-                    <Text style={{ fontWeight: '900', fontSize: 20, height: 40, marginStart: 20 }}>{`${details.email}`}</Text>
-                    <View style={{ height: 40, marginStart: 20, flexDirection: 'row', width: width * 0.5 }}>
-                        <Text style={{ fontWeight: '900', fontSize: 20 }}>{`Rating: ${details.rating}/5`}</Text>
-                        <Icon name='star' size={30} color='#FFD700' style={{ paddingStart: 5 }} />
-                    </View>
-                </Card>
-            </View> : null
-        }
-
-        <TouchableOpacity
-            onPress={logout}
-            style={Styles.Button}>
-            <Text style={{ fontSize: width * 0.040, color: 'white' }}>Logout</Text>
-        </TouchableOpacity>
+            <TouchableOpacity
+                onPress={logout}
+                style={Styles.Button}>
+                <Text style={{ fontSize: width * 0.040, color: 'white' }}>Logout</Text>
+            </TouchableOpacity>
+        </ScrollView>
     </View>
 }
 
