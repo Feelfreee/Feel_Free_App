@@ -47,7 +47,8 @@ const MainBottomTabNavigator = () => (
       },
       activeTintColor: Colors.theme
       ,
-      showLabel: false
+      showLabel: false,
+      keyboardHidesTabBar: true
     }}
     initialRouteName='Posts'
   >

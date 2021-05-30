@@ -76,7 +76,7 @@ const AccountScreen = (props) => {
 
         {
             details ? <View style={{ height: 150, width: width * 0.9, marginVertical: 30 }}>
-                <Card >
+                <Card style={{ borderRadius: 20, padding: 30, paddingStart: 10 }} elevation={20}>
                     <Text style={{ fontWeight: '900', fontSize: 20, height: 40, marginStart: 20 }}>{`${details.first_name} ${details.last_name}`}</Text>
                     <Text style={{ fontWeight: '900', fontSize: 20, height: 40, marginStart: 20 }}>{`${details.email}`}</Text>
                     <View style={{ height: 40, marginStart: 20, flexDirection: 'row', width: width * 0.5 }}>

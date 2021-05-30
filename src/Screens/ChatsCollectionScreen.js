@@ -10,7 +10,7 @@ const { width, height } = Dimensions.get('screen');
 
 const ChatsCollectionScreen = (props) => {
 
-    const [screenIndex, setScreenIndex] = useState(0);
+    // const [screenIndex, setScreenIndex] = useState(0);
 
     return <View style={{
         flex: 1,
@@ -31,7 +31,7 @@ const ChatsCollectionScreen = (props) => {
             borderBottomRightRadius: 20,
             borderBottomLeftRadius: 20,
         }}>
-            <TouchableOpacity
+            {/* <TouchableOpacity
                 style={Styles.postsButtonsStyle}
                 onPress={() => setScreenIndex(0)}>
                 <Text style={{
@@ -39,14 +39,15 @@ const ChatsCollectionScreen = (props) => {
                     fontSize: 16,
                     color: screenIndex == 0 ? 'black' : 'lightgrey'
                 }}>Seeking Help</Text>
-            </TouchableOpacity>
+            </TouchableOpacity> */}
             <TouchableOpacity
                 style={Styles.postsButtonsStyle}
-                onPress={() => setScreenIndex(1)}
+                // onPress={() => setScreenIndex(1)}
             >
                 <Text style={{
                     fontWeight: 'bold',
                     fontSize: 16,
+                    // color: screenIndex == 1 ? 'black' : 'lightgrey'
                     color: 'black'
                 }}>I'm Helping</Text>
             </TouchableOpacity>
@@ -54,13 +55,12 @@ const ChatsCollectionScreen = (props) => {
 
 
         <View style={{ flex: 1 }} >
-            {screenIndex === 0 ?
             <IamHelpingScreen navigation={props.navigation} />
-                : screenIndex === 1 ? <MyHelpersScreen
-                    navigation={props.navigation}
-                />
+            {/* <MyHelpersScreen navigation={props.navigation} /> */}
+            {/* {screenIndex === 0 ?
+                : screenIndex === 1 ?
                     : null
-            }
+            } */}
         </View>
     </View>
 }

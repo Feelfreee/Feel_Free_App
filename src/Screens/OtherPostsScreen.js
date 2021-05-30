@@ -27,10 +27,9 @@ const OtherPostsScreen = ({ navigation }) => {
     posts
   }
 }`}
-
                         }
                         axios(config).then(value => {
-                            console.log(value.data);
+                            console.log(value.data.data.get_dashoard_posts.posts[0]);
                             setPosts(value.data.data.get_dashoard_posts.posts);
                             setRefresh(false);
                         })

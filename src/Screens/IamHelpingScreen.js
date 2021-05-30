@@ -32,15 +32,15 @@ const IamHelpingScreen = ({ navigation }) => {
                             },
                             data: {
                                 query: `{
-  room_candidates(where: {created_by: {_neq: "${uid}"}}) {
-    created_by
-    post_id
-    room_id
-  }
-}`
+                                      room_candidates(where: {created_by: {_neq: "${uid}"}}) {
+                                        created_by
+                                        post_id
+                                        room_id
+                                      }
+                                    }`
                             }
                         }
-                        console.log(config);
+                        // console.log(config);
                         axios(config).then(value => {
                             console.log(value.data.data.room_candidates);
                             setPosts(value.data.data.room_candidates);
