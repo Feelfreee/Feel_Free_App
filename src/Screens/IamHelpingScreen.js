@@ -75,7 +75,7 @@ const IamHelpingScreen = ({ navigation }) => {
                     type
                     onPress={() => navigation.navigate('Chats', { room_id, uid, from: 'helper' })}
                     style={{ ...Styles.Button, width: width * 0.8, marginTop: 0 }}>
-                    <Text style={{ fontSize: width * 0.040, color: 'white' }}>Chat</Text>
+                    <Text style={{ fontSize: 20, fontWeight: 'bold', color: 'white' }}>Chat</Text>
                 </TouchableOpacity>
             </Card.Actions>
 
