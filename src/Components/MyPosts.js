@@ -28,7 +28,7 @@ const MyPosts = ({
         }} elevation={10}
     >
         <Card.Title
-            title={random_name}
+            title={random_name.substr(0, 20)}
             subtitle={new Date(created_at).toLocaleString()}
             left={() => <Avatar.Text size={45} label={random_name[0]} />}
             titleStyle={{ color: Colors.theme }}
@@ -36,11 +36,10 @@ const MyPosts = ({
         <Card.Content>
             <Paragraph>{description}</Paragraph>
         </Card.Content>
-
-        <Card.Cover source={{ uri: picture }}
+        {picture ? <Card.Cover source={{ uri: picture }}
             style={onImageErrorStyle}
             onError={() => setOnImageErrorStyle({ height: 0, width: 0 })}
-        />
+        /> : null}
 
         <Card.Actions
             style={{ justifyContent: 'space-between' }}

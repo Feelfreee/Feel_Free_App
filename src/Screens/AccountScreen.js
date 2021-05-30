@@ -77,11 +77,12 @@ const AccountScreen = (props) => {
         {
             details ? <View style={{ height: 150, width: width * 0.9, marginVertical: 30 }}>
                 <Card >
-                    <Card.Title title={`${details.first_name} ${details.last_name}`} />
-                    <Card.Title title={`${details.email}`} />
-                    <Card.Title title={`Rating: ${details.rating}/5`} right={
-                        () => <Icon name='star' color='#FFD700' size={30} style={{ marginRight: 200 }} />
-                    } />
+                    <Text style={{ fontWeight: '900', fontSize: 20, height: 40, marginStart: 20 }}>{`${details.first_name} ${details.last_name}`}</Text>
+                    <Text style={{ fontWeight: '900', fontSize: 20, height: 40, marginStart: 20 }}>{`${details.email}`}</Text>
+                    <View style={{ height: 40, marginStart: 20, flexDirection: 'row', width: width * 0.5 }}>
+                        <Text style={{ fontWeight: '900', fontSize: 20 }}>{`Rating: ${details.rating}/5`}</Text>
+                        <Icon name='star' size={30} color='#FFD700' style={{ paddingStart: 5 }} />
+                    </View>
                 </Card>
             </View> : null
         }

@@ -23,6 +23,7 @@ const IamHelpingScreen = ({ navigation }) => {
                 AsyncStorage.getItem('USER_UID')
                     .then(uid => {
                         setUid(uid);
+                        console.log(uid);
                         const config = {
                             url: 'https://feelfree12.herokuapp.com/v1/graphql',
                             method: 'post',
@@ -30,19 +31,18 @@ const IamHelpingScreen = ({ navigation }) => {
                                 Authorization: `Bearer ${token}`,
                             },
                             data: {
-                                query: `query MyQuery {
-  room_candidates(where: {_not: {created_by: {_eq: "${uid}"}}}) {
+                                query: `{
+  room_candidates(where: {created_by: {_neq: "${uid}"}}) {
     created_by
-    post {
-      random_name
-    }
+    post_id
     room_id
   }
-}
-`
+}`
                             }
                         }
+                        console.log(config);
                         axios(config).then(value => {
+                            console.log(value.data.data.room_candidates);
                             setPosts(value.data.data.room_candidates);
                             setRefresh(false);
                         }).catch(e => console.log(e));
@@ -56,7 +56,7 @@ const IamHelpingScreen = ({ navigation }) => {
 
     console.log(posts)
 
-    const Items = ({ random_name, room_id }) => {
+    const Items = ({ room_id }) => {
         // const { width, height } = Dimensions.get('screen');
         return <Card
             style={{
@@ -68,16 +68,16 @@ const IamHelpingScreen = ({ navigation }) => {
             elevation={10}
         >
             <Card.Title
-                title={random_name}
-                left={() => <Avatar.Text size={45} label={random_name[0]} />}
+                title={room_id.substr(0, 20)}
+                left={() => <Avatar.Text size={45} />}
                 titleStyle={{ color: Colors.theme }}
             />
 
             <Card.Actions style={{ justifyContent: 'center' }}>
                 <TouchableOpacity
                     type
-                    onPress={() => navigation.navigate('Chats', { room_id, random_name, helper_id: uid, from: 'helper' })}
-                    style={{ ...Styles.Button, width: width * 0.8, marginTop: 10 }}>
+                    onPress={() => navigation.navigate('Chats', { room_id, uid, from: 'helper' })}
+                    style={{ ...Styles.Button, width: width * 0.8, marginTop: 0 }}>
                     <Text style={{ fontSize: width * 0.040, color: 'white' }}>Chat</Text>
                 </TouchableOpacity>
             </Card.Actions>
@@ -93,7 +93,7 @@ const IamHelpingScreen = ({ navigation }) => {
             }
             keyExtractor={(item) => JSON.stringify(item)}
             data={posts}
-            renderItem={({ item }) => <Items {...item} random_name={item.post.random_name} />}
+            renderItem={({ item }) => <Items {...item} />}
         />
     </View>
 }

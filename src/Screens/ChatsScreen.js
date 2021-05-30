@@ -78,12 +78,22 @@ const ChatsScreen = (props) => {
             })
     }
 
-    const SenderImageComponent = () => {
+    const Avatar_A = () => {
         return <Avatar.Text size={40} style={{ marginTop: 5 }} label='A' />
     }
 
+    const Avatar_ME = () => {
+        return <Avatar.Text size={40} style={{ marginTop: 5 }} label='Me' />
+    }
+
+    const SenderImageComponent = () => {
+        return <Avatar_ME />
+    }
+
     const RecieverImageComponent = () => {
-        return <Avatar.Text size={40} label={props.route.params.name[0]} style={{ marginTop: 5 }} />
+        return props.route.params.name ? <Avatar.Text size={40} style={{ marginTop: 5 }} label={props.route.params.name} />
+            : <Avatar_A />
+
     }
 
     const SenderMessageComponent = ({ color, item, index }) => {
