@@ -51,7 +51,7 @@ const ChatsCollectionScreen = (props) => {
 
 
         <View style={{ flex: 1 }} >
-            <IamHelpingScreen />
+            <IamHelpingScreen navigation={props.navigation} />
             {/* {screenIndex === 0 ?
                 // <OtherPostsScreen
                 //     navigation={props.navigation}

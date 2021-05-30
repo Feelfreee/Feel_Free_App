@@ -14,7 +14,8 @@ const ChatRequest = ({
     post_id,
     text,
     helper_id,
-    navigation
+    navigation,
+    rating
 }) => {
 
     const createRoom = () => {
@@ -54,7 +55,7 @@ const ChatRequest = ({
         elevation={10}
     >
         <Card.Title
-            title={name}
+            title={name + '      ' + rating + "/5"}
             subtitle={created_at}
             left={() => <Avatar.Text size={45} label={name[0]} />}
             titleStyle={{ color: Colors.theme }}

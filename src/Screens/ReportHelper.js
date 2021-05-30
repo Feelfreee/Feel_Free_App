@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text, TouchableOpacity } from 'react-native';
+import { View, Text, TouchableOpacity, ToastAndroid } from 'react-native';
 import Header from '../Components/Header';
 import { Rating } from 'react-native-ratings';
 import Styles from '../Styles';
@@ -30,6 +30,7 @@ const ReportHelperScreen = (props) => {
                 console.log(config);
                 axios(config).then(value => {
                     console.log(value.data)
+                    ToastAndroid.showWithGravity('Rating Submitted.', 2000, ToastAndroid.BOTTOM);
                     props.route.params.from === 'end' ? props.navigation.navigate('Main') : null;
                 }).catch(e => console.log(e));
             })

@@ -85,6 +85,7 @@ const ChatRequestsScreen = (props) => {
                                             `query MyQuery {
                                                 users(where: { uid: { _eq: "${helper.helper_id}" } }) {
                                                     first_name
+                                                    rating
                                                 }
                                             }`
                                     },
@@ -92,7 +93,10 @@ const ChatRequestsScreen = (props) => {
                                     url: 'https://feelfree12.herokuapp.com/v1/graphql',
                                 };
                                 axios(nameConfig).then((name) => {
-                                    helperData.push({ name: name.data.data.users[0].first_name, ...helper });
+                                    helperData.push({
+                                        name: name.data.data.users[0].first_name,
+                                        rating: name.data.data.users[0].rating, ...helper
+                                    });
                                     if (value.data.data.users_by_pk.posts[0].posts_helpers.length === helperData.length) {
                                         setShowList(true);
                                         setHelperList(helperData);

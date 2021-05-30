@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, TouchableOpacity, FlatList, TextInput, Image, Modal, TouchableWithoutFeedback } from 'react-native';
+import { View, Text, TouchableOpacity, FlatList, TextInput, Image, Modal, TouchableWithoutFeedback, ToastAndroid } from 'react-native';
 import Header from '../Components/Header';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import Styles from '../Styles';
@@ -163,14 +163,16 @@ const ChatsScreen = (props) => {
                     <Icon name='send' color={Colors.theme} size={45} />
                 </TouchableOpacity>
             }
-            <TouchableOpacity
+            {props.route.params.from !== 'helper' ? <TouchableOpacity
                 style={{ ...Styles.sendButtonStyle, width: 30, padding: 0, marginRight: 15 }}
                 onPress={
-                    () => setIsModalVisible(true)
+                    () => {
+                        setIsModalVisible(true)
+                    }
                 }
             >
                 <Icon name='more-vert' size={30} color='grey' />
-            </TouchableOpacity>
+            </TouchableOpacity> : null}
         </View>
         <Modal
             visible={isModalVisible}

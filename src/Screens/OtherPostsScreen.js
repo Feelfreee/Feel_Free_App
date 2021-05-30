@@ -30,7 +30,7 @@ const OtherPostsScreen = ({ navigation }) => {
 
                         }
                         axios(config).then(value => {
-                            console.log(value);
+                            console.log(value.data);
                             setPosts(value.data.data.get_dashoard_posts.posts);
                             setRefresh(false);
                         })
@@ -39,7 +39,7 @@ const OtherPostsScreen = ({ navigation }) => {
     }
 
     useEffect(() => {
-        // fetchPosts();
+        fetchPosts();
     }, [])
 
 
@@ -53,7 +53,7 @@ const OtherPostsScreen = ({ navigation }) => {
             }
             keyExtractor={(item) => JSON.stringify(item)}
             data={posts}
-            renderItem={({ item }) => <ChatRequest {...item} helperCount={item.helpers.helper_id.length} navigation={navigation} />}
+            renderItem={({ item }) => <OthersPost {...item} helperCount={item.helpers.helper_id.length} navigation={navigation} />}
             initialNumToRender={10}
         />
     </View>
