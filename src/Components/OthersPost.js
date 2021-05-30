@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text, TouchableOpacity, Dimensions } from 'react-native';
+import { View, Text, TouchableOpacity, Dimensions, ToastAndroid } from 'react-native';
 import { Card, Paragraph, Avatar } from 'react-native-paper';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import { Colors } from '../Constants'
@@ -57,7 +57,8 @@ const OthersPost = ({
                 </TouchableOpacity>
                 <TouchableOpacity onPress={() => {
                     console.log('all helpers');
-                    navigation.navigate('ReportPost')
+                    // navigation.navigate('ReportPost')
+                    ToastAndroid.showWithGravity('Coming Soon!', 2000, ToastAndroid.BOTTOM);
                 }}>
                     <Icon name='bug-report' size={height * 0.05} color={Colors.theme} />
                 </TouchableOpacity>

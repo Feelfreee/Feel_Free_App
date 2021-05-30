@@ -4,39 +4,6 @@ import React, { useEffect, useState } from 'react';
 import { View, Text, Button, FlatList, RefreshControl } from 'react-native';
 import OthersPost from '../Components/OthersPost';
 
-const posts = [
-    {
-        name: 'asdfghjkl',
-        time: 'time-date',
-        description: 'qwertyuioplkmnbvcxzsasdfghjk',
-        helperCount: 10,
-    },
-    {
-        name: 'qwertyuiop',
-        time: 'time-date',
-        description: 'qwertyuioplkmnbvcxzsasdfghjk',
-        helperCount: 10,
-    },
-    {
-        name: 'zxcvbnm',
-        time: 'time-date',
-        description: 'qwertyuioplkmnbvcxzsasdfghjk',
-        helperCount: 10,
-    },
-    {
-        name: 'azxsdc',
-        time: 'time-date',
-        description: 'qwertyuioplkmnbvcxzsasdfghjk',
-        helperCount: 10,
-    },
-    {
-        name: 'mlkjhnbh',
-        time: 'time-date',
-        description: 'qwertyuioplkmnbvcxzsasdfghjk',
-        helperCount: 10,
-    }
-]
-
 const OtherPostsScreen = ({ navigation }) => {
 
     const [posts, setPosts] = useState([]);
@@ -72,7 +39,7 @@ const OtherPostsScreen = ({ navigation }) => {
     }
 
     useEffect(() => {
-        fetchPosts();
+        // fetchPosts();
     }, [])
 
 
@@ -86,7 +53,7 @@ const OtherPostsScreen = ({ navigation }) => {
             }
             keyExtractor={(item) => JSON.stringify(item)}
             data={posts}
-            renderItem={({ item }) => <OthersPost {...item} helperCount={item.helpers.helper_id.length} navigation={navigation} />}
+            renderItem={({ item }) => <ChatRequest {...item} helperCount={item.helpers.helper_id.length} navigation={navigation} />}
             initialNumToRender={10}
         />
     </View>
