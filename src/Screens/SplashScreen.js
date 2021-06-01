@@ -1,6 +1,7 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import axios from 'axios';
 import React, { useEffect } from 'react';
-import { View, Image, Dimensions, StatusBar, Text } from 'react-native';
+import { View, Image, Dimensions, StatusBar, Text, ActivityIndicator } from 'react-native';
 import { Colors } from '../Constants';
 
 const { width, height } = Dimensions.get('window');
@@ -10,14 +11,39 @@ const SplashScreen = (props) => {
     useEffect(() => {
         AsyncStorage
             .getItem('API_ACCESS_TOKEN')
-            .then((value) => {
-                console.log('auth', value);
-                if (value)
-                    props.navigation.navigate('Main')
-                else
-                    props.navigation.navigate('Auth')
+            .then((token) => {
+                console.log('auth', token);
+                const config = {
+                    url: 'https://feelfree12.herokuapp.com/v1/graphql',
+                    method: 'post',
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                    },
+                    data: {
+                        query: `query MyQuery {
+                                  users {
+                                    first_name
+                                  }
+                                }`
+                    }
+                }
+
+                axios(config)
+                    .then((userData) => {
+                        console.log(userData.data.data.users[0].first_name)
+                        if (token && (userData.data.data.users[0].first_name))
+                            props.navigation.navigate('Main')
+                        else
+                            props.navigation.navigate('Auth')
+                    }).catch(e => {
+                        console.log(e);
+                        props.navigation.navigate('Auth')
+                    })
             })
-            .catch((value) => props.navigation.navigate('Auth'));
+            .catch((value) => {
+                console.log('outer catch', value);
+                props.navigation.navigate('Auth')
+            });
     }, [])
 
     return <View
@@ -43,6 +69,7 @@ const SplashScreen = (props) => {
             }}>
                 Feel Free
         </Text>
+            <ActivityIndicator size='large' color={Colors.theme} />
         </View>
         <StatusBar backgroundColor='white' />
     </View >

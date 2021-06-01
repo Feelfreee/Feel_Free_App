@@ -130,7 +130,7 @@ const ChatsScreen = (props) => {
             style={{ paddingHorizontal: 10 }}
             renderItem={
                 ({ item, index }) => {
-                    return <View>
+                    return <View key={index}>
                         {
                             item.user_id == props.route.params.uid
                                 ?
